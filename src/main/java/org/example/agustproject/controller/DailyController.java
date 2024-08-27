@@ -1,7 +1,7 @@
 package org.example.agustproject.controller;
 
 import lombok.RequiredArgsConstructor;
-import org.example.agustproject.dto.*;
+import org.example.agustproject.dto.daily.*;
 import org.example.agustproject.service.DailyService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

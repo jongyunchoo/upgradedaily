@@ -1,7 +1,7 @@
 package org.example.agustproject.service;
 
 import lombok.RequiredArgsConstructor;
-import org.example.agustproject.dto.*;
+import org.example.agustproject.dto.daily.*;
 import org.example.agustproject.repository.DailyRepository;
 import org.example.agustproject.entity.DailyEntity;
 import org.springframework.stereotype.Service;

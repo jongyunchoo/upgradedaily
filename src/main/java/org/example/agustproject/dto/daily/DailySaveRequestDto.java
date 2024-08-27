@@ -1,4 +1,4 @@
-package org.example.agustproject.dto;
+package org.example.agustproject.dto.daily;
 
 import lombok.Getter;
 
