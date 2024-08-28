@@ -19,7 +19,7 @@ public class DailyEntity extends Timestamped {
     private String dailydetail;
 
 
-    @OneToMany(mappedBy = "daily", cascade = CascadeType.REMOVE)
+    @OneToMany(mappedBy = "daily", cascade = CascadeType.REMOVE )
     public List<CommentEntity> comments = new ArrayList<>();
 
     public DailyEntity(Long id, String dailytitle, String dailydetail) {
