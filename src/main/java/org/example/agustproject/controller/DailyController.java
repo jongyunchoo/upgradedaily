@@ -3,6 +3,7 @@ package org.example.agustproject.controller;
 import lombok.RequiredArgsConstructor;
 import org.example.agustproject.dto.daily.*;
 import org.example.agustproject.service.DailyService;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,8 +21,11 @@ public class DailyController {
     }
 
     @GetMapping("/dailies")
-    public ResponseEntity<List<DailySimpleResponseDto>> getDailies(){
-        return ResponseEntity.ok(dailyService.getDailies());
+    public ResponseEntity<Page<DailySimpleResponseDto>> getDailies(
+            @RequestParam(defaultValue = "1", required = false) int page,
+            @RequestParam(defaultValue = "10", required = false) int size
+    ){
+        return ResponseEntity.ok(dailyService.getDailies(page, size));
     }
 
     @PutMapping("/daliies/{dailiesId}")

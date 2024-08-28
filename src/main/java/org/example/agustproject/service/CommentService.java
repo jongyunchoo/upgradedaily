@@ -3,7 +3,9 @@ package org.example.agustproject.service;
 import lombok.RequiredArgsConstructor;
 import org.example.agustproject.dto.comment.*;
 import org.example.agustproject.entity.CommentEntity;
+import org.example.agustproject.entity.DailyEntity;
 import org.example.agustproject.repository.CommentRepository;
+import org.example.agustproject.repository.DailyRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -15,14 +17,18 @@ import java.util.List;
 @Transactional(readOnly = true)
 public class CommentService {
 
+    private final DailyRepository dailyRepository;
     private final CommentRepository commentRepository;
 
     @Transactional
-    public CommentSaveResponseDto saveComment(CommentSaveRequestDto commentSaveRequestDto) {
-        CommentEntity newComment = new CommentEntity(commentSaveRequestDto.getDetail());
+    public CommentSaveResponseDto saveComment(Long dailyId,CommentSaveRequestDto commentSaveRequestDto) {
+
+        DailyEntity daily = dailyRepository.findById(dailyId).orElseThrow(()-> new NullPointerException("일정이 없습니다."));
+
+        CommentEntity newComment = new CommentEntity(commentSaveRequestDto.getDetail(), daily);
         CommentEntity savedComment = commentRepository.save(newComment);
 
-        return new CommentSaveResponseDto(savedComment.getId(), savedComment.getDetail(), savedComment.getCreatedAt(), savedComment.getModifiedAt());
+        return new CommentSaveResponseDto(savedComment.getId(), savedComment.getDetail(), savedComment.getCreatedAt(),savedComment.getModifiedAt());
     }
 
 

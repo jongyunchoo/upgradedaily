@@ -4,6 +4,9 @@ import lombok.RequiredArgsConstructor;
 import org.example.agustproject.dto.daily.*;
 import org.example.agustproject.repository.DailyRepository;
 import org.example.agustproject.entity.DailyEntity;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -36,22 +39,19 @@ public class DailyService {
         );
     }
 
-    public List<DailySimpleResponseDto> getDailies() {
-        List<DailyEntity> dailyList = dailyRepository.findAll();
+    public Page<DailySimpleResponseDto> getDailies(int page, int size) {
+        Pageable pageable = PageRequest.of(page - 1, size);
 
-        List<DailySimpleResponseDto> dtoList = new ArrayList<>();
-        for(DailyEntity daily : dailyList){
-            DailySimpleResponseDto dto = new DailySimpleResponseDto(
-                    daily.getId(),
-                    daily.getDailytitle(),
-                    daily.getDailydetail(),
-                    daily.getCreatedAt(),
-                    daily.getModifiedAt()
-            );
-            dtoList.add(dto);
-        }
-        return dtoList;
+        Page<DailyEntity> datiies = dailyRepository.findAllByOrderByModifiedAtDesc(pageable);
+
+        return datiies.map(dailyEntity -> new DailySimpleResponseDto(
+                dailyEntity.getId(),
+                dailyEntity.getDailytitle(),
+                dailyEntity.getDailydetail()
+        ));
+
     }
+
     @Transactional
     public DailyUpdateResponseDto updateDaily(Long dailyId, DailyUpdateRequestDto dailyUpdateRequestDto) {
         DailyEntity daily = dailyRepository.findById(dailyId).orElseThrow(()-> new NullPointerException("일정은 없습니다."));
@@ -63,4 +63,5 @@ public class DailyService {
 
         return new DailyUpdateResponseDto(daily.getId(), daily.getDailytitle(), daily.getDailydetail());
     }
+
 }
